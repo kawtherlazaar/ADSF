@@ -1,10 +1,22 @@
-// src/models/projet.model.js
+
 import mongoose from "mongoose";
 
 const projetSchema = new mongoose.Schema(
   {
-    titre: { type: String, required: true },
-    description: String,
+    titre: {
+      type: String,
+      required: true,
+    },
+
+    description: {
+      type: String,
+    },
+
+    // 🔹 image du projet (path ou filename)
+    image: {
+      type: String,
+      default: "", // مثال: "uploads/projets/image.jpg"
+    },
 
     categorie: {
       type: String,

@@ -1,33 +1,70 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './projectCard.css';
+import { Card, Badge, Button } from "react-bootstrap";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const ProjectCard = ({ project }) => {
-    const imageUrl = project?.image?.trim()
-        ? `http://localhost:5300/${project.image}`
-        : 'default-image.jpg';
+function ProjetCard({ projet }) {
+ 
+  const [showMore, setShowMore] = useState(false);
 
-    return (
-        <div className="project-card">
-            <img src={imageUrl} alt={project?.titre} className="project-image" onError={(e) => {
-                e.target.style.display = "none";
-            }} />
-            <div className="project-info">
-                <h5 className="project-title">{project?.titre}</h5>
-                <p className="project-description">{project?.description}</p>
-                <a href={`/projects/${project?._id}`} className="btn btn-primary">Voir plus</a>
-            </div>
+  
+  if (!projet) return null;
+
+  const STATUS_LABEL = {
+    en_cours: { text: "En cours", bg: "warning" },
+    termine: { text: "Terminé", bg: "success" },
+    archive: { text: "Archivé", bg: "secondary" },
+  };
+
+  const status = STATUS_LABEL[projet.statut] || STATUS_LABEL.en_cours;
+
+  const description =
+    projet.description || "Aucune description disponible";
+
+  return (
+    <Card className="h-100 shadow-sm">
+      <Card.Img
+        variant="top"
+        src={
+          projet.image
+            ? `http://localhost:5300/${projet.image}`
+            : "/images/default-project.jpg"
+        }
+        height="200"
+        style={{ objectFit: "cover" }}
+      />
+
+      <Card.Body>
+        <Card.Title>{projet.titre}</Card.Title>
+
+        <Badge bg="info" className="mb-2">
+          {projet.categorie}
+        </Badge>
+
+        <div className="mb-2">
+          <Badge bg={status.bg}>{status.text}</Badge>
         </div>
-    );
-};
 
-ProjectCard.propTypes = {
-    project: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        titre: PropTypes.string,
-        description: PropTypes.string,
-        image: PropTypes.string,
-    }).isRequired,
-};
+        <Card.Text className="text-muted">
+          {showMore ? description : description.slice(0, 120)}
+          {description.length > 120 && (
+            <>
+              {!showMore && "... "}
+              <Button
+                variant="link"
+                size="sm"
+                className="p-0"
+                onClick={() => setShowMore(!showMore)}
+              >
+                {showMore ? "Voir moins" : "Voir plus"}
+              </Button>
+            </>
+          )}
+        </Card.Text>
 
-export default ProjectCard;
+        
+      </Card.Body>
+    </Card>
+  );
+}
+
+export default ProjetCard;

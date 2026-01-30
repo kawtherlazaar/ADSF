@@ -20,7 +20,7 @@ function Projets() {
       <div className="row">
         {projects.map(p => (
           <div className="col-md-4 mb-3" key={p._id}>
-            <ProjectCard project={p} />
+            <ProjectCard projet={p} />
           </div>
         ))}
       </div>

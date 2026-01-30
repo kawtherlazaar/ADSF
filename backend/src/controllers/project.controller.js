@@ -4,36 +4,32 @@ import Project from "../models/project.model.js";
 /* =====================================================
    🟢 GET PROJECTS
    - Pagination
-   - Filtres (status, category)
-   - Recherche (title)
+   - Filtres (statut, categorie)
+   - Recherche (titre)
 ===================================================== */
 export const getProjects = async (req, res) => {
   try {
-    /* Pagination */
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 5;
     const skip = (page - 1) * limit;
 
-    /* Filtres */
     const filters = {};
 
-    if (req.query.status) {
-      filters.status = req.query.status;
+    if (req.query.statut) {
+      filters.statut = req.query.statut;
     }
 
-    if (req.query.category) {
-      filters.category = req.query.category;
+    if (req.query.categorie) {
+      filters.categorie = req.query.categorie;
     }
 
-    /* Recherche par titre */
     if (req.query.search) {
-      filters.title = {
+      filters.titre = {
         $regex: req.query.search,
         $options: "i",
       };
     }
 
-    /* Requête */
     const projects = await Project.find(filters)
       .skip(skip)
       .limit(limit)
@@ -71,10 +67,20 @@ export const getProjectById = async (req, res) => {
 
 /* =====================================================
    🟢 CREATE PROJECT (ADMIN)
+   image تجي من req.file (multer)
 ===================================================== */
 export const createProject = async (req, res) => {
   try {
-    const project = await Project.create(req.body);
+    const project = await Project.create({
+      titre: req.body.titre,
+      description: req.body.description,
+      categorie: req.body.categorie,
+      statut: req.body.statut,
+      dateDebut: req.body.dateDebut,
+      dateFin: req.body.dateFin,
+      image: req.file ? req.file.path : "", // ✅ هنا التعديل
+    });
+
     res.status(201).json(project);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -86,9 +92,23 @@ export const createProject = async (req, res) => {
 ===================================================== */
 export const updateProject = async (req, res) => {
   try {
+    const data = {
+      titre: req.body.titre,
+      description: req.body.description,
+      categorie: req.body.categorie,
+      statut: req.body.statut,
+      dateDebut: req.body.dateDebut,
+      dateFin: req.body.dateFin,
+    };
+
+    // لو فما image جديدة
+    if (req.file) {
+      data.image = req.file.path;
+    }
+
     const updated = await Project.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      data,
       { new: true }
     );
 

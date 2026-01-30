@@ -1,29 +1,28 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Spinner, Button, Badge } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card, Spinner, Badge } from "react-bootstrap";
 
 function BenevolePublic() {
   const [benevoles, setBenevoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const loadBenevoles = async () => {
       try {
         setLoading(true);
+
         const res = await fetch("http://localhost:5300/api/members");
-        
-        if (!res.ok) throw new Error("Erreur lors du chargement");
-        
+        if (!res.ok) {
+          throw new Error("Erreur serveur");
+        }
+
         const data = await res.json();
-        console.log("Bénévoles reçus:", data);
-        
-        const benevolesArray = data.benevoles || (Array.isArray(data) ? data : []);
-        setBenevoles(benevolesArray);
+
+        // backend يرجّع Array متاع membres
+        setBenevoles(Array.isArray(data) ? data : []);
         setError(null);
       } catch (err) {
-        console.error("Erreur:", err);
+        console.error(err);
         setError("Impossible de charger les bénévoles");
         setBenevoles([]);
       } finally {
@@ -37,7 +36,7 @@ function BenevolePublic() {
   if (loading) {
     return (
       <Container className="text-center py-5">
-        <Spinner animation="border" variant="primary" />
+        <Spinner animation="border" />
         <p className="mt-3">Chargement des bénévoles...</p>
       </Container>
     );
@@ -45,87 +44,94 @@ function BenevolePublic() {
 
   return (
     <div>
-      {/* Hero Section */}
+      {/* HERO */}
       <section className="py-5 bg-primary text-white">
         <Container>
-          <h1 className="mb-3">Notre Équipe de Bénévoles</h1>
+          <h1>Notre équipe de bénévoles</h1>
           <p className="lead">
-            Découvrez les personnes engagées qui font la différence dans nos projets
+            Des personnes engagées qui font la différence
           </p>
         </Container>
       </section>
 
-      {/* Bénévoles */}
+      {/* LISTE */}
       <section className="py-5">
         <Container>
           {error && (
-            <div className="alert alert-warning text-center">
-              {error}
-            </div>
+            <div className="alert alert-warning text-center">{error}</div>
           )}
 
-          {benevoles.length > 0 ? (
+          {benevoles.length === 0 ? (
+            <div className="alert alert-info text-center">
+              Aucun bénévole pour le moment
+            </div>
+          ) : (
             <Row>
               {benevoles.map((b) => (
                 <Col md={6} lg={4} key={b._id} className="mb-4">
-                  <Card className="h-100 shadow-sm" style={{ 
-                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                    cursor: "pointer"
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-8px)";
-                    e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.15)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
-                  }}
-                  >
+                  <Card className="h-100 shadow-sm">
                     <Card.Body>
+                      {/* AVATAR */}
                       <div className="text-center mb-3">
-                        <div className="avatar mb-3" style={{
-                          width: "100px",
-                          height: "100px",
-                          borderRadius: "50%",
-                          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          color: "white",
-                          fontSize: "2.5rem",
-                          fontWeight: "bold",
-                          margin: "0 auto",
-                        }}>
-                          {b.prenom?.charAt(0)}{b.nom?.charAt(0)}
+                        <div
+                          style={{
+                            width: 90,
+                            height: 90,
+                            borderRadius: "50%",
+                            background:
+                              "linear-gradient(135deg, #667eea, #764ba2)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "#fff",
+                            fontSize: "2rem",
+                            margin: "0 auto",
+                          }}
+                        >
+                          {b.prenom?.charAt(0)}
+                          {b.nom?.charAt(0)}
                         </div>
-                        <h5 className="card-title mb-1">{b.prenom} {b.nom}</h5>
+
+                        <h5 className="mt-2">
+                          {b.prenom} {b.nom}
+                        </h5>
                       </div>
 
+                      {/* INFOS */}
                       {b.email && (
-                        <p className="text-muted small mb-2">
-                          <i className="bi bi-envelope me-2"></i>
-                          {b.email}
-                        </p>
+                        <p className="small text-muted mb-1">{b.email}</p>
                       )}
 
                       {b.telephone && (
-                        <p className="text-muted small mb-2">
-                          <i className="bi bi-telephone me-2"></i>
+                        <p className="small text-muted mb-1">
                           {b.telephone}
                         </p>
                       )}
 
-                      {b.competences && (
-                        <p className="card-text small mb-3">
-                          <strong>Compétences:</strong> {b.competences}
-                        </p>
-                      )}
+                      {/* COMPETENCES (Array) */}
+                      {Array.isArray(b.competences) &&
+                        b.competences.length > 0 && (
+                          <p className="small">
+                            <strong>Compétences :</strong>{" "}
+                            {b.competences.join(", ")}
+                          </p>
+                        )}
 
-                      <div className="text-center">
+                      {/* BADGES */}
+                      <div className="text-center mt-3">
                         <Badge bg="info" className="me-2">
                           {b.disponibilite}
                         </Badge>
-                        <Badge bg={b.statut === "actif" ? "success" : "secondary"}>
+
+                        <Badge
+                          bg={
+                            b.statut === "approuve"
+                              ? "success"
+                              : b.statut === "rejete"
+                              ? "danger"
+                              : "warning"
+                          }
+                        >
                           {b.statut}
                         </Badge>
                       </div>
@@ -134,20 +140,6 @@ function BenevolePublic() {
                 </Col>
               ))}
             </Row>
-          ) : (
-            <div className="alert alert-info text-center py-5">
-              <h4>Aucun bénévole pour le moment</h4>
-              <p>Soyez le premier à rejoindre notre équipe engagée !</p>
-            </div>
-          )}
-
-          {benevoles.length > 0 && (
-            <div className="text-center mt-5">
-              <h4>Vous aussi, rejoignez notre équipe !</h4>
-              <p className="text-muted mb-4">
-                Ensemble, nous pouvons faire la différence
-              </p>
-            </div>
           )}
         </Container>
       </section>

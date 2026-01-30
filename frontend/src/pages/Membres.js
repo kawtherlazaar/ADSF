@@ -145,67 +145,75 @@ function Membres() {
               <th>Statut</th>
               <th className="text-center">Actions</th>
             </tr>
-          </thead>
+          </thead><tbody>
+  {membres.length === 0 && (
+    <tr>
+      <td colSpan="5" className="text-center text-muted">
+        Aucun membre trouvé
+      </td>
+    </tr>
+  )}
 
-          <tbody>
-            {membres.length === 0 && (
-              <tr>
-                <td colSpan="5" className="text-center text-muted">
-                  Aucun membre trouvé
-                </td>
-              </tr>
-            )}
+  {membres.map((m) => (
+    <tr key={m._id}>
+      {/* ✅ NOM COMPLET */}
+      <td>
+        {m.prenom || m.nom
+          ? `${m.prenom ?? ""} ${m.nom ?? ""}`
+          : "-"}
+      </td>
 
-            {membres.map((m) => (
-              <tr key={m._id}>
-                <td>{m.nomComplet}</td>
+      {/* EMAIL */}
+      <td className="d-none d-md-table-cell">
+        {m.email || "-"}
+      </td>
 
-                <td className="d-none d-md-table-cell">
-                  {m.email}
-                </td>
+      {/* TELEPHONE */}
+      <td className="d-none d-lg-table-cell">
+        {m.telephone || "-"}
+      </td>
 
-                <td className="d-none d-lg-table-cell">
-                  {m.telephone || "-"}
-                </td>
+      {/* STATUT */}
+      <td>
+        <Badge
+          bg={
+            m.statut === "approuve"
+              ? "success"
+              : m.statut === "rejete"
+              ? "danger"
+              : "warning"
+          }
+        >
+          {m.statut}
+        </Badge>
+      </td>
 
-                <td>
-                  <Badge
-                    bg={
-                      m.statut === "approuve"
-                        ? "success"
-                        : m.statut === "rejete"
-                        ? "danger"
-                        : "warning"
-                    }
-                  >
-                    {m.statut}
-                  </Badge>
-                </td>
+      {/* ACTIONS */}
+      <td>
+        <div className="d-flex flex-column flex-md-row gap-2 justify-content-center">
+          <Button
+            size="sm"
+            variant="success"
+            disabled={m.statut === "approuve"}
+            onClick={() => handleApprove(m._id)}
+          >
+            ✓ Approuver
+          </Button>
 
-                <td>
-                  <div className="d-flex flex-column flex-md-row gap-2 justify-content-center">
-                    <Button
-                      size="sm"
-                      variant="success"
-                      disabled={m.statut === "approuve"}
-                      onClick={() => handleApprove(m._id)}
-                    >
-                      ✓ Approver
-                    </Button>
+          <Button
+            size="sm"
+            variant="danger"
+            disabled={m.statut === "rejete"}
+            onClick={() => handleReject(m._id)}
+          >
+            ✕ Rejeter
+          </Button>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
 
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      disabled={m.statut === "rejete"}
-                      onClick={() => handleReject(m._id)}
-                    >
-                      ✕ Rejeter
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
         </Table>
       </div>
 

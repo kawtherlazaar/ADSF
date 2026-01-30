@@ -17,21 +17,36 @@ export const getProjects = async () => {
   return await res.json();
 };
 
-// GET all projects (alias)
-export const getAllProjects = async () => {
-  return getProjects();
-};
-
-// ADD project
+// ADD project (avec image possible)
 export const addProject = async (project) => {
   const token = localStorage.getItem("token");
 
+  let body;
+  let headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  // Si project contient un fichier image
+  if (project.imageFile) {
+    body = new FormData();
+    body.append("titre", project.titre);
+    body.append("description", project.description);
+    body.append("categorie", project.categorie);
+    body.append("statut", project.statut);
+    body.append("dateDebut", project.dateDebut);
+    body.append("dateFin", project.dateFin);
+    body.append("image", project.imageFile); // fichier
+    // لا تحط Content-Type، browser يضبطه وحده
+  } else {
+    // sinon envoyer en JSON
+    headers["Content-Type"] = "application/json";
+    body = JSON.stringify(project);
+  }
+
   const res = await fetch(API_URL, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: project, // project is FormData
+    headers,
+    body,
   });
 
   if (!res.ok) {
@@ -41,17 +56,33 @@ export const addProject = async (project) => {
   return await res.json();
 };
 
-// UPDATE project
+// UPDATE project (avec image possible)
 export const updateProjectApi = async (id, project) => {
   const token = localStorage.getItem("token");
 
+  let body;
+  let headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  if (project.imageFile) {
+    body = new FormData();
+    body.append("titre", project.titre);
+    body.append("description", project.description);
+    body.append("categorie", project.categorie);
+    body.append("statut", project.statut);
+    body.append("dateDebut", project.dateDebut);
+    body.append("dateFin", project.dateFin);
+    body.append("image", project.imageFile);
+  } else {
+    headers["Content-Type"] = "application/json";
+    body = JSON.stringify(project);
+  }
+
   const res = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(project),
+    headers,
+    body,
   });
 
   if (!res.ok) {

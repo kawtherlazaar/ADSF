@@ -4,8 +4,7 @@ import AppNavbar from './components/navbar/Navbar'
 import Homme from './pages/Homme'
 import Login from './pages/Login'
 import Dashboard from './pages/dashbord'
-import Addproject from './components/projects/Addproject'
-import ProjetAdmin from './pages/ProjetAdmin'
+
 import Projets from './pages/Projets'
 import Membres from './pages/Membres'
 import BenevolePublic from './pages/BenevolePublic'
@@ -21,6 +20,7 @@ import GalleryPage from './pages/GalleryPage'
 import ProtectedRoute from './components/Protectedroute'
 import Actualite from './pages/Actualites'
 import "./Styles/App.css"
+import ProjectAdmin from './pages/ProjetAdmin'
 
 
 function App() {
@@ -48,8 +48,8 @@ function App() {
         {/* Admin */}
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/dashboard/Addproject" element={<ProtectedRoute><Addproject /></ProtectedRoute>} />
-        <Route path="/dashboard/projets" element={<ProtectedRoute><ProjetAdmin /></ProtectedRoute>} />
+        
+        <Route path="/dashboard/projets" element={<ProtectedRoute><ProjectAdmin/></ProtectedRoute>} />
 
         <Route path="/dashboard/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
         <Route path="/dashboard/membres" element={<ProtectedRoute><Membres /></ProtectedRoute>} />

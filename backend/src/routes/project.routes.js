@@ -9,14 +9,41 @@ import {
 
 import { protect } from "../middleware/auth.middleware.js";
 import { isAdmin } from "../middleware/admin.middleware.js";
+import { uploadProjetImage } from "../middleware/uploads/UploadProjet.js";
 
 const router = express.Router();
-//public 
+
+/* =========================
+   🌍 Public routes
+========================= */
 router.get("/", getProjects);
 router.get("/:id", getProjectById);
-//only admin
-router.post("/", protect, isAdmin, createProject);
-router.put("/:id", protect, isAdmin, updateProject);
-router.delete("/:id", protect, isAdmin, deleteProject);
+
+/* =========================
+   🔐 Admin routes
+========================= */
+router.post(
+  "/",
+  protect,
+  isAdmin,
+  uploadProjetImage.single("image"), // multer جاهز باش يستقبل الملف
+  createProject
+);
+
+
+router.put(
+  "/:id",
+  protect,
+  isAdmin,
+  uploadProjetImage.single("image"), // ✅ ajout multer
+  updateProject
+);
+
+router.delete(
+  "/:id",
+  protect,
+  isAdmin,
+  deleteProject
+);
 
 export default router;
