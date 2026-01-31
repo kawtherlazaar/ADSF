@@ -18,9 +18,11 @@ import Footer from './components/Footer/Footer'
 import ActualitesPublic from './pages/ActualitesPublic'
 import GalleryPage from './pages/GalleryPage'
 import ProtectedRoute from './components/Protectedroute'
-import Actualite from './pages/Actualites'
+
 import "./Styles/App.css"
 import ProjectAdmin from './pages/ProjetAdmin'
+import Actualites from './pages/Actualites'
+
 
 
 function App() {
@@ -32,7 +34,7 @@ function App() {
   return (
 
     <BrowserRouter>
-      {/* Navbar تبان في الصفحات public */}
+      {/* Navbar  tban kan fi les pages public */}
       <AppNavbar />
 
       <Routes>
@@ -53,7 +55,7 @@ function App() {
 
         <Route path="/dashboard/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
         <Route path="/dashboard/membres" element={<ProtectedRoute><Membres /></ProtectedRoute>} />
-        <Route path="/dashboard/actualites" element={<ProtectedRoute><Actualite /></ProtectedRoute>} />
+        <Route path="/dashboard/actualites" element={<ProtectedRoute><Actualites /></ProtectedRoute>} />
         <Route path="/dashboard/partenaires" element={<ProtectedRoute><Partners /></ProtectedRoute>} />
         <Route path="/dashboard/medias" element={<ProtectedRoute><GalleryPage /></ProtectedRoute>} />
 
