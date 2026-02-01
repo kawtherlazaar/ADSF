@@ -16,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
+
 // ⬇️ ROUTE BINDING 
 app.use("/api/projects", projectRoutes);
 app.use("/api/auth", authRoutes);

@@ -43,40 +43,41 @@ export const getActualites = async (req, res) => {
 /* 🔐 ADMIN : créer actualité */
 export const createActualite = async (req, res) => {
   try {
-    const actualite = await Actualite.create({
+    const actualite = new Actualite({
       ...req.body,
-      image: req.file
-        ? `/uploads/actualites/${req.file.filename}`
-        : null,
+      image: req.file ? req.file.filename : null,
     });
 
-    res.status(201).json({
-      message: "Actualité ajoutée avec succès",
-      actualite,
-    });
+    await actualite.save();
+    res.status(201).json(actualite);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+
 
 
 /* 🔐 ADMIN : modifier */
 export const updateActualite = async (req, res) => {
   try {
-    const updated = await Actualite.findByIdAndUpdate(
+    const data = { ...req.body };
+
+    if (req.file) {
+      data.image = req.file.filename;
+    }
+
+    const actualite = await Actualite.findByIdAndUpdate(
       req.params.id,
-      {
-        ...req.body,
-        ...(req.file && { image: req.file.path }),
-      },
+      data,
       { new: true }
     );
 
-    res.json(updated);
+    res.json(actualite);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 /* 🔐 ADMIN : SOFT DELETE */
 export const deleteActualite = async (req, res) => {

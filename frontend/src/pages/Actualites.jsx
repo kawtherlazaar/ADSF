@@ -6,7 +6,7 @@ import {
   deleteActualite,
 } from "../services/actualite.service";
 import { Table, Button, Form, Image, Pagination, Modal, Row, Col } from "react-bootstrap";
-
+import "../Styles/Actualites.css";
 function Actualite() {
   /* ===== FORM STATE ===== */
   const [form, setForm] = useState({
@@ -178,11 +178,23 @@ function Actualite() {
               <td>{actu.titre}</td>
               <td>{actu.categorie}</td>
               <td>{new Date(actu.datePublication).toLocaleDateString()}</td>
-              <td>
-                {actu.image ? (
-                  <Image src={`http://localhost:5300/uploads/actualite/${actu.image}`} width="80" rounded />
-                ) : "Pas d'image"}
-              </td>
+             <td>
+  {actu.image ? (
+    <img
+      src={`http://localhost:5300/uploads/actualites/${actu.image}`}
+      style={{
+        width: "70px",
+        height: "70px",
+        objectFit: "cover",
+        borderRadius: "8px",
+      }}
+    />
+  ) : (
+    "—"
+  )}
+</td>
+
+
               <td>
                 <Button variant="warning" size="sm" className="me-2" onClick={() => handleEdit(actu)}>✏️</Button>
                 <Button variant="danger" size="sm" onClick={() => handleDelete(actu._id)}>🗑️</Button>

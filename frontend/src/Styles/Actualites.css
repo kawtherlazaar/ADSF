@@ -1,117 +1,87 @@
-/* Actualites Page - Optimized News Cards */
+/* =========================
+   DARK MODE GLOBAL
+========================= */
 
-/* Card container with performance optimizations */
-.actualite-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
-  contain: layout style paint;
-  position: relative;
-  overflow: hidden;
+body.dark {
+  background-color: #0f172a; /* خلفية داكنة مريحة */
+  color: #e5e7eb;
 }
 
-.actualite-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+/* =========================
+   CARDS (Actualités)
+========================= */
+
+body.dark .card {
+  background-color: #1e293b; /* card أفتح من الخلفية */
+  border: 1px solid #334155;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.actualite-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent-primary);
+/* =========================
+   CARD IMAGE
+========================= */
+
+body.dark .card img {
+  border-bottom: 1px solid #334155;
 }
 
-.actualite-card:focus-within {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+/* =========================
+   TITLES
+========================= */
+
+body.dark .card h3,
+body.dark .card h2 {
+  color: #f8fafc; /* أبيض واضح */
 }
 
-/* Title styling with enhanced typography */
-.actualite-card .card-title {
-  color: var(--text-primary);
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-md);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: color var(--transition-fast);
-}
+/* =========================
+   DESCRIPTION TEXT
+========================= */
 
-.actualite-card:hover .card-title {
-  color: var(--accent-primary);
-}
-
-/* Text content with improved readability */
-.actualite-card .card-text {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+body.dark .card p {
+  color: #cbd5e1; /* رمادي فاتح */
   line-height: 1.6;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .actualite-card {
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
-  }
+/* =========================
+   DATE & META
+========================= */
 
-  .actualite-card .card-title {
-    font-size: 1rem;
-  }
-
-  .actualite-card .card-text {
-    font-size: 0.85rem;
-  }
+body.dark .card .date,
+body.dark .card .meta {
+  color: #94a3b8;
+  font-size: 0.9rem;
 }
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .actualite-card {
-    transition: none;
-  }
+/* =========================
+   BADGE (Communiqué)
+========================= */
 
-  .actualite-card:hover {
-    transform: none;
-  }
+body.dark .badge,
+body.dark .tag {
+  background-color: #2563eb;
+  color: #ffffff;
 }
 
-/* High contrast mode */
-@media (prefers-contrast: high) {
-  .actualite-card {
-    border-width: 2px;
-  }
+/* =========================
+   LINKS (Voir plus)
+========================= */
 
-  .actualite-card::before {
-    height: 6px;
-  }
+body.dark .card a {
+  color: #60a5fa;
+  font-weight: 500;
 }
 
-/* Print styles */
-@media print {
-  .actualite-card {
-    box-shadow: none;
-    border: 1px solid #000;
-    break-inside: avoid;
-  }
+body.dark .card a:hover {
+  text-decoration: underline;
+}
 
-  .actualite-card:hover {
-    transform: none;
-  }
+/* =========================
+   OPTIONAL HOVER EFFECT
+========================= */
+
+body.dark .card:hover {
+  background-color: #22314d;
 }

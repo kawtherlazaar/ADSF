@@ -22,7 +22,6 @@ function InscriptionMembre() {
     telephone: "",
     competences: "",
     disponibilite: "A temps partiel",
-    motivation: "",
   };
 
   const [form, setForm] = useState(initialFormState);
@@ -31,6 +30,7 @@ function InscriptionMembre() {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [isFormValid, setIsFormValid] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function InscriptionMembre() {
     setLoading(true);
 
     try {
-      // ✅ payload مطابق للـ BACK
+      // ✅ payload بلا motivation
       const payload = {
         nom: form.nom.trim(),
         prenom: form.prenom.trim(),
@@ -93,7 +93,7 @@ function InscriptionMembre() {
     }
   };
 
-  const totalSteps = 4;
+  const totalSteps = 3;
   const progress = (step / totalSteps) * 100;
 
   return (
@@ -107,12 +107,7 @@ function InscriptionMembre() {
                   Devenir Bénévole
                 </h2>
 
-                <ProgressBar
-                  now={progress}
-                  className="mb-4"
-                  animated
-                  striped
-                />
+                <ProgressBar now={progress} className="mb-4" animated striped />
 
                 <Form onSubmit={handleSubmit}>
                   {/* STEP 1 */}
@@ -138,7 +133,10 @@ function InscriptionMembre() {
                         />
                       </Form.Group>
 
-                      <Button onClick={() => setStep(2)} disabled={!form.nom || !form.prenom}>
+                      <Button
+                        onClick={() => setStep(2)}
+                        disabled={!form.nom || !form.prenom}
+                      >
                         Suivant
                       </Button>
                     </>
@@ -171,7 +169,9 @@ function InscriptionMembre() {
                       <Button variant="secondary" onClick={() => setStep(1)}>
                         Précédent
                       </Button>{" "}
-                      <Button onClick={() => setStep(3)}>Suivant</Button>
+                      <Button onClick={() => setStep(3)}>
+                        Suivant
+                      </Button>
                     </>
                   )}
 
@@ -179,7 +179,9 @@ function InscriptionMembre() {
                   {step === 3 && (
                     <>
                       <Form.Group className="mb-3">
-                        <Form.Label>Compétences (séparées par des virgules) *</Form.Label>
+                        <Form.Label>
+                          Compétences (séparées par des virgules) *
+                        </Form.Label>
                         <Form.Control
                           as="textarea"
                           name="competences"
@@ -206,34 +208,26 @@ function InscriptionMembre() {
                       <Button variant="secondary" onClick={() => setStep(2)}>
                         Précédent
                       </Button>{" "}
-                      <Button onClick={() => setStep(4)}>Suivant</Button>
-                    </>
-                  )}
-
-                  {/* STEP 4 */}
-                  {step === 4 && (
-                    <>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Motivation (optionnel)</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          name="motivation"
-                          value={form.motivation}
-                          onChange={handleChange}
-                        />
-                      </Form.Group>
-
-                      <Button variant="secondary" onClick={() => setStep(3)}>
-                        Précédent
-                      </Button>{" "}
-                      <Button type="submit" disabled={loading || !isFormValid}>
+                      <Button
+                        type="submit"
+                        disabled={loading || !isFormValid}
+                      >
                         {loading ? "Envoi..." : "Soumettre"}
                       </Button>
                     </>
                   )}
 
-                  {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-                  {success && <Alert variant="success" className="mt-3">{success}</Alert>}
+                  {error && (
+                    <Alert variant="danger" className="mt-3">
+                      {error}
+                    </Alert>
+                  )}
+
+                  {success && (
+                    <Alert variant="success" className="mt-3">
+                      {success}
+                    </Alert>
+                  )}
                 </Form>
               </Card.Body>
             </Card>

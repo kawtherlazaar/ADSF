@@ -15,11 +15,12 @@ export const getStatistiquesDashboard = async (req, res) => {
     const totalActualites = await Actualite.countDocuments();
 
     /* 👥 Membres par statut */
-    const membresParStatut = {
-      enAttente: await Member.countDocuments({ status: "pending" }),
-      approuves: await Member.countDocuments({ status: "approved" }),
-      rejetes: await Member.countDocuments({ status: "rejected" }),
-    };
+const membresParStatut = {
+  enAttente: await Member.countDocuments({ statut: "en_attente" }),
+  approuves: await Member.countDocuments({ statut: "approuve" }),
+  rejetes: await Member.countDocuments({ statut: "rejete" }),
+};
+
 
     /* 🖼️ Médias par type */
     const mediasParType = {
