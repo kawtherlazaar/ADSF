@@ -4,7 +4,7 @@
 
 Ce projet consiste en la conception et le développement d’une **plateforme digitale web** visant à centraliser, gérer et valoriser des informations et des services liés à l’organisation (projets, actualités, utilisateurs, bénévoles, etc.).
 
-La plateforme a été réalisée dans le cadre d’un **un projet de développement web** et adopte une architecture moderne **Full Stack**, assurant performance, sécurité et évolutivité.
+La plateforme a été réalisée dans le cadre d’ **un projet de développement web** et adopte une architecture moderne **Full Stack**, assurant performance, sécurité et évolutivité.
 
 ---
 
